@@ -717,7 +717,7 @@ static NSString * __HTMLEntityForCharacter(unichar character)
         case MMListTypeBulleted:
             [scanner beginTransaction];
             unichar nextChar = scanner.nextCharacter;
-            if (nextChar == '*' || nextChar == '-' || nextChar == '+')
+            if (nextChar == '-' || nextChar == '+')
             {
                 [scanner advance];
                 if (scanner.nextCharacter == ' ')

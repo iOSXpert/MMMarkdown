@@ -204,14 +204,11 @@ static NSString * const ESCAPABLE_CHARS = @"\\`*_{}[]()#+-.!>";
 {
     MMElement *element;
     
-    if (self.extensions & MMMarkdownExtensionsStrikethroughs)
-    {
-        [scanner beginTransaction];
-        element = [self _parseStrikethroughWithScanner:scanner];
-        [scanner commitTransaction:element != nil];
-        if (element)
-            return element;
-    }
+    [scanner beginTransaction];
+    element = [self _parseStrikethroughWithScanner:scanner];
+    [scanner commitTransaction:element != nil];
+    if (element)
+        return element;
     
     // URL Autolinking
     if (self.parseLinks && self.extensions & MMMarkdownExtensionsAutolinkedURLs)
@@ -502,7 +499,7 @@ static NSString * const ESCAPABLE_CHARS = @"\\`*_{}[]()#+-.!>";
 
 - (MMElement *)_parseStrikethroughWithScanner:(MMScanner *)scanner
 {
-    if (![scanner matchString:@"~~"])
+    if (![scanner matchString:@"~"])
         return nil;
     
     NSCharacterSet  *whitespaceSet = NSCharacterSet.whitespaceCharacterSet;
@@ -515,7 +512,7 @@ static NSString * const ESCAPABLE_CHARS = @"\\`*_{}[]()#+-.!>";
         if ([whitespaceSet characterIsMember:scanner.previousCharacter])
             return NO;
         
-        if (![scanner matchString:@"~~"])
+        if (![scanner matchString:@"~"])
             return NO;
         
         return YES;
@@ -618,13 +615,13 @@ static NSString * const ESCAPABLE_CHARS = @"\\`*_{}[]()#+-.!>";
     NSArray *children = [self _parseWithScanner:scanner untilTestPasses:atEnd];
     if (parseEm && (!children || remainingChars != 1))
         self.parseEm = YES;
-    if (parseStrong && (!children || remainingChars != 2))
+    if (parseStrong && (!children || remainingChars != 1))
         self.parseStrong = YES;
     
     if (!children)
         return nil;
     
-    BOOL isEm = (numberOfChars == 1) || (numberOfChars == 3 && remainingChars != 1);
+    BOOL isEm = (character == '_');
     NSUInteger startLocation = scanner.startLocation + remainingChars;
     MMElement *element = [MMElement new];
     element.type     = isEm ? MMElementTypeEm : MMElementTypeStrong;
