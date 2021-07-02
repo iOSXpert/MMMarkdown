@@ -797,11 +797,11 @@
 			};
 			buildConfigurationList = BE813DD014F893EB00EC9469 /* Build configuration list for PBXProject "MMMarkdown" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = BE813DCB14F893EB00EC9469;
 			productRefGroup = BE813DD714F893EB00EC9469 /* Products */;
